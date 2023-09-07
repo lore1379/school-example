@@ -29,9 +29,9 @@ public class SchoolController {
 		studentView.studentAdded(student);
 	}
 
-	public void deleteStudent(Student studentToDelete) {
-		// TODO Auto-generated method stub
-		
+	public void deleteStudent(Student student) {
+		studentRepository.delete(student.getId());
+		studentView.studentRemoved(student);
 	}
 
 }
