@@ -8,4 +8,6 @@ public interface StudentView {
 
 	void showAllStudents(List<Student> studends);
 
+	void studentAdded(Student student);
+
 }
