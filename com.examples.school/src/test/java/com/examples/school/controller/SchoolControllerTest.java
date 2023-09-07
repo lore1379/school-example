@@ -5,7 +5,12 @@ import static org.mockito.Mockito.*;
 
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.examples.school.model.Student;
 import com.examples.school.repository.StudentRepository;
@@ -13,14 +18,32 @@ import com.examples.school.view.StudentView;
 
 public class SchoolControllerTest {
 	
+	@Mock
+	private StudentView studentView;
+	
+	@Mock
+	private StudentRepository studentRepository;
+	
+	@InjectMocks
+	private SchoolController schoolController;
+
+	private AutoCloseable closeable;
+
+	@Before
+	public void setup() {
+		closeable = MockitoAnnotations.openMocks(this);	
+	}
+	
+	@After
+	public void releaseMocks() throws Exception {
+		closeable.close();
+	}
+	
 	@Test
 	public void testAllStudends() {
 		List<Student> studends = asList(new Student());
-		StudentRepository studentRepository = mock(StudentRepository.class);
-		StudentView studentView = mock(StudentView.class);
 		when(studentRepository.findAll()).
 			thenReturn(studends);
-		SchoolController schoolController = new SchoolController(studentView, studentRepository);
 		schoolController.allStudents();
 		verify(studentView).showAllStudents(studends);
 	}
