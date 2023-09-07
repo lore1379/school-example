@@ -19,7 +19,7 @@
     <assertj.version>3.11.1</assertj.version>
     <mockito.version>4.11.0</mockito.version>
     <mongo.driver.version>3.9.1</mongo.driver.version>
-    <mongo.java.server.version>1.44.0</mongo.java.server.version>
+    <mongo.java.server.version>1.11.1</mongo.java.server.version>
   </properties>
 
   <dependencies>
