@@ -10,4 +10,6 @@ public interface StudentView {
 
 	void studentAdded(Student student);
 
+	void showError(String string, Student existingStudent);
+
 }

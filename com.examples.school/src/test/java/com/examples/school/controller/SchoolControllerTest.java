@@ -60,5 +60,17 @@ public class SchoolControllerTest {
 		inOrder.verify(studentView).studentAdded(student);
 		
 	}
+	
+	@Test
+	public void testNewStudentWhenStudentAlreadyExists() {
+		Student studentToAdd = new Student ("1", "test");
+		Student existingStudent = new Student ("1", "name");
+		when(studentRepository.findById("1")).
+			thenReturn(existingStudent);
+		schoolController.newStudent(studentToAdd);
+		verify(studentView)
+			.showError("Already existing student with id 1", existingStudent);
+		verifyNoMoreInteractions(ignoreStubs(studentRepository));
+	}
 
 }
