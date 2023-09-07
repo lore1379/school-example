@@ -83,5 +83,16 @@ public class SchoolControllerTest {
 		inOrder.verify(studentRepository).delete("1");
 		inOrder.verify(studentView).studentRemoved(studentToDelete);
 	}
+	
+	@Test
+	public void testDeleteStudentWhenStudentDoesNotExist() {
+		Student studentToDelete = new Student ("1", "test");
+		when(studentRepository.findById("1")).
+			thenReturn(null);
+		schoolController.deleteStudent(studentToDelete);
+		verify(studentView)
+			.showError("No existing student with id 1", studentToDelete);
+		verifyNoMoreInteractions(ignoreStubs(studentRepository));
+	}
 
 }
