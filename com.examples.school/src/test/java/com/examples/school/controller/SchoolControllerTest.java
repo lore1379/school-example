@@ -17,11 +17,11 @@ public class SchoolControllerTest {
 	public void testAllStudends() {
 		List<Student> studends = asList(new Student());
 		StudentRepository studentRepository = mock(StudentRepository.class);
+		StudentView studentView = mock(StudentView.class);
 		when(studentRepository.findAll()).
 			thenReturn(studends);
-		SchoolController schoolController = new SchoolController();
+		SchoolController schoolController = new SchoolController(studentView, studentRepository);
 		schoolController.allStudents();
-		StudentView studentView = mock(StudentView.class);
 		verify(studentView).showAllStudents(studends);
 	}
 
