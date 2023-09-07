@@ -12,4 +12,6 @@ public interface StudentView {
 
 	void showError(String string, Student existingStudent);
 
+	void studentRemoved(Student studentToDelete);
+
 }

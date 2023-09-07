@@ -12,4 +12,6 @@ public interface StudentRepository {
 
 	public void save(Student student);
 
+	public void delete(String string);
+
 }

@@ -72,5 +72,16 @@ public class SchoolControllerTest {
 			.showError("Already existing student with id 1", existingStudent);
 		verifyNoMoreInteractions(ignoreStubs(studentRepository));
 	}
+	
+	@Test
+	public void testDeleteStudentWhenStudentExists() {
+		Student studentToDelete = new Student ("1", "test");
+		when(studentRepository.findById("1")).
+			thenReturn(studentToDelete);
+		schoolController.deleteStudent(studentToDelete);
+		InOrder inOrder = inOrder(studentRepository, studentView);
+		inOrder.verify(studentRepository).delete("1");
+		inOrder.verify(studentView).studentRemoved(studentToDelete);
+	}
 
 }
