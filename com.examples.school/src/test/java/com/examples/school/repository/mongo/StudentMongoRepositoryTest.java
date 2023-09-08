@@ -6,6 +6,8 @@ import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL
 import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
 
 import java.net.InetSocketAddress;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.junit.After;
@@ -84,6 +86,17 @@ public class StudentMongoRepositoryTest {
 		addTestStudentToDatabase("2", "test2");
 		assertThat(studentRepository.findById("2"))
 			.isEqualTo(new Student("2", "test2"));
+	}
+	
+	@Test
+	public void testSave() {
+		Student student = new Student("1", "addedStudent");
+		studentRepository.save(student);
+		assertThat(StreamSupport
+					.stream(studentCollection.find().spliterator(), false)
+					.map(d -> new Student(""+d.get("id"), ""+d.get("name")))
+					.collect(Collectors.toList()))
+			.containsExactly(student);
 	}
 
 	private void addTestStudentToDatabase(String id, String name) {
