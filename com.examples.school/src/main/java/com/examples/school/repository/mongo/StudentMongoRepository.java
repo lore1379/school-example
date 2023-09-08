@@ -1,8 +1,6 @@
 package com.examples.school.repository.mongo;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -12,6 +10,7 @@ import com.examples.school.model.Student;
 import com.examples.school.repository.StudentRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 public class StudentMongoRepository implements StudentRepository {
 
@@ -35,7 +34,10 @@ public class StudentMongoRepository implements StudentRepository {
 
 	@Override
 	public Student findById(String id) {
-		// TODO Auto-generated method stub
+		Document d = studentCollection.find(Filters.eq("id", id)).first();
+		if (d != null) {
+			return new Student(""+d.get("id"), ""+d.get("name"));
+		}
 		return null;
 	}
 
