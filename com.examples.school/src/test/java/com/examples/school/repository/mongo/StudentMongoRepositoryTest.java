@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.net.InetSocketAddress;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mongodb.MongoClient;
@@ -15,12 +19,36 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 public class StudentMongoRepositoryTest {
 
+	private static MongoServer server;
+	private static InetSocketAddress serverAddress;
+	
+	private MongoClient client;
+	private StudentMongoRepository studentRepository;
+	
+	@BeforeClass
+	public static void setupServer() {
+		server = new MongoServer(new MemoryBackend());
+		serverAddress = server.bind();		
+	}
+	
+	@AfterClass
+	public static void shutdownServer() {
+		server.shutdown();
+	}
+	
+	@Before
+	public void setup() {
+		client = new MongoClient(new ServerAddress(serverAddress));
+		studentRepository = new StudentMongoRepository(client);		
+	}
+	
+	@After
+	public void tearDown() {
+		client.close();
+	}
+
 	@Test
 	public void testFindAllWhenDatabaseIsEmpty() {
-		MongoServer server = new MongoServer(new MemoryBackend());
-		InetSocketAddress serverAddress = server.bind();
-		MongoClient client = new MongoClient(new ServerAddress(serverAddress));
-		StudentMongoRepository studentRepository = new StudentMongoRepository(client);
 		assertThat(studentRepository.findAll()).isEmpty();
 	}
 }
