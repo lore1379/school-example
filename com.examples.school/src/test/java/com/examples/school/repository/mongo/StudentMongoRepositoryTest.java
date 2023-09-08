@@ -6,6 +6,7 @@ import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL
 import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -92,11 +93,15 @@ public class StudentMongoRepositoryTest {
 	public void testSave() {
 		Student student = new Student("1", "addedStudent");
 		studentRepository.save(student);
-		assertThat(StreamSupport
+		assertThat(readAllStudentFromDatabase())
+			.containsExactly(student);
+	}
+
+	private List<Student> readAllStudentFromDatabase() {
+		return StreamSupport
 					.stream(studentCollection.find().spliterator(), false)
 					.map(d -> new Student(""+d.get("id"), ""+d.get("name")))
-					.collect(Collectors.toList()))
-			.containsExactly(student);
+					.collect(Collectors.toList());
 	}
 
 	private void addTestStudentToDatabase(String id, String name) {
