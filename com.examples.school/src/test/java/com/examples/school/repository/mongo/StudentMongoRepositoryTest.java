@@ -71,6 +71,12 @@ public class StudentMongoRepositoryTest {
 					new Student("1", "test1"),
 					new Student("2", "test2"));
 	}
+	
+	@Test
+	public void testFindByIdNotFound() {
+		assertThat(studentRepository.findById("1"))
+			.isNull();
+	}
 
 	private void addTestStudentToDatabase(String id, String name) {
 		studentCollection.insertOne(
