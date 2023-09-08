@@ -50,8 +50,8 @@ public class StudentMongoRepository implements StudentRepository {
 	}
 
 	@Override
-	public void delete(String string) {
-		// TODO Auto-generated method stub
+	public void delete(String id) {
+		studentCollection.deleteOne(Filters.eq("id", id));
 
 	}
 
