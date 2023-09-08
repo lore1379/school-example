@@ -30,6 +30,7 @@ public class StudentMongoRepositoryTest {
 	
 	private MongoClient client;
 	private StudentMongoRepository studentRepository;
+	private MongoCollection<Document> studentCollection;
 	
 	@BeforeClass
 	public static void setupServer() {
@@ -46,6 +47,9 @@ public class StudentMongoRepositoryTest {
 	public void setup() {
 		client = new MongoClient(new ServerAddress(serverAddress));
 		studentRepository = new StudentMongoRepository(client);		
+		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
+		database.drop();
+		studentCollection = database.getCollection(STUDENT_COLLECTION_NAME);
 	}
 	
 	@After
@@ -60,20 +64,18 @@ public class StudentMongoRepositoryTest {
 	
 	@Test
 	public void testFindAllWhenDatabaseIsNotEmpty() {
-		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
-		database.drop();
-		MongoCollection<Document> studentCollection = database.getCollection(STUDENT_COLLECTION_NAME);
-		studentCollection.insertOne(
-				new Document()
-					.append("id", "1")
-					.append("name", "test1"));
-		studentCollection.insertOne(
-				new Document()
-					.append("id", "2")
-					.append("name", "test2"));
+		addTestStudentToDatabase("1", "test1");
+		addTestStudentToDatabase("2", "test2");
 		assertThat(studentRepository.findAll())
 			.containsExactly(
 					new Student("1", "test1"),
 					new Student("2", "test2"));
+	}
+
+	private void addTestStudentToDatabase(String id, String name) {
+		studentCollection.insertOne(
+				new Document()
+					.append("id", id)
+					.append("name", name));
 	}
 }
