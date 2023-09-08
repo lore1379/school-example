@@ -1,5 +1,6 @@
 package com.examples.school.repository.mongo;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.bson.Document;
@@ -19,8 +20,7 @@ public class StudentMongoRepository implements StudentRepository {
 
 	@Override
 	public List<Student> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
