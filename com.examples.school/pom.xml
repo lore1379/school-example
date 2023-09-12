@@ -19,8 +19,11 @@
     <assertj.version>3.11.1</assertj.version>
     <mockito.version>4.11.0</mockito.version>
     <mongo.driver.version>3.9.1</mongo.driver.version>
+    <logback.version>1.2.3</logback.version>
     <mongo.java.server.version>1.11.1</mongo.java.server.version>
     <testcontainers.version>1.16.0</testcontainers.version>
+    <build.helper.version>3.0.0</build.helper.version>
+    <failsafe.version>2.22.2</failsafe.version>
   </properties>
 
   <dependencies>
@@ -33,7 +36,7 @@
       <!-- required to see Mongo Java Driver logs -->
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.2.3</version>
+      <version>${logback.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -72,7 +75,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${build.helper.version}</version>
         <executions>
           <execution>
             <id>add-test-source</id>
@@ -85,6 +88,19 @@
                 <source>src/it/java</source>
               </sources>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${failsafe.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
