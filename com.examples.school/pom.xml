@@ -20,6 +20,7 @@
     <mockito.version>4.11.0</mockito.version>
     <mongo.driver.version>3.9.1</mongo.driver.version>
     <mongo.java.server.version>1.11.1</mongo.java.server.version>
+    <testcontainers.version>1.16.0</testcontainers.version>
   </properties>
 
   <dependencies>
@@ -58,6 +59,12 @@
       <version>${mongo.java.server.version}</version>
       <scope>test</scope>
     </dependency> 
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mongodb</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   
   <build>
