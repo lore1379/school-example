@@ -1,6 +1,5 @@
 package com.examples.school.controller;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static java.util.Arrays.asList;
 
@@ -59,5 +58,14 @@ public class SchoolControllerIT {
 		verify(studentView)
 			.studentAdded(student);
 		
+	}
+	
+	@Test
+	public void testDeleteStudent() {
+		Student studentToDelete = new Student("1", "test");
+		studentRepository.save(studentToDelete);
+		schoolController.deleteStudent(studentToDelete);
+		verify(studentView)
+			.studentRemoved(studentToDelete);
 	}
 }
