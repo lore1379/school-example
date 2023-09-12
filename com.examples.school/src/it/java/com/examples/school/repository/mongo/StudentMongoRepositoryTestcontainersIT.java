@@ -74,6 +74,14 @@ public class StudentMongoRepositoryTestcontainersIT {
 		assertThat(readAllStudentsFromDatabase())
 			.containsExactly(student);
 	}
+	
+	@Test
+	public void testDelete() {
+		addTestStudentToDatabase("1", "test1");
+		studentRepository.delete("1");
+		assertThat(readAllStudentsFromDatabase())
+			.isEmpty();
+	}
 
 	private List<Student> readAllStudentsFromDatabase() {
 		return StreamSupport.stream(studentCollection.find().spliterator(), false)
