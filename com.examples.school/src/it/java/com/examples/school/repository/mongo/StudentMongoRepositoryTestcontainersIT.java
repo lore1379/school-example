@@ -44,18 +44,19 @@ public class StudentMongoRepositoryTestcontainersIT {
 
 	@Test
 	public void testFindAll() {
-		studentCollection.insertOne(
-				new Document()
-					.append("id", "1")
-					.append("name", "test1"));
-		studentCollection.insertOne(
-				new Document()
-					.append("id", "2")
-					.append("name", "test2"));
+		addTestStudentToDatabase("1", "test1");
+		addTestStudentToDatabase("2", "test2");
 		assertThat(studentRepository.findAll())
 			.containsExactly(
 					new Student("1", "test1"),
 					new Student("2", "test2"));
 			
+	}
+
+	private void addTestStudentToDatabase(String id, String name) {
+		studentCollection.insertOne(
+				new Document()
+					.append("id", id)
+					.append("name", name));
 	}
 }
