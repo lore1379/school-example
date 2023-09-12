@@ -1,6 +1,10 @@
 package com.examples.school.repository.mongo;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL_DB_NAME;
 import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
 
@@ -60,6 +64,16 @@ public class StudentMongoRepositoryTestcontainersIT {
 		assertThat(studentRepository.findById("2"))
 			.isEqualTo(new Student("2", "test2"));
 		
+	}
+	
+	@Test
+	public void testSave() {
+		Student student = new Student ("1", "added student");
+		studentRepository.save(student);
+		assertThat(StreamSupport.stream(studentCollection.find().spliterator(), false)
+					.map(d -> new Student(""+d.get("id"), ""+d.get("name")))
+					.collect(Collectors.toList()))
+			.containsExactly(student);
 	}
 
 	private void addTestStudentToDatabase(String id, String name) {
