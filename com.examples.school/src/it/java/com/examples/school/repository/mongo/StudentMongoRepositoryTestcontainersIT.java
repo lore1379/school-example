@@ -1,5 +1,6 @@
 package com.examples.school.repository.mongo;
 
+import static org.assertj.core.api.Assertions.*;
 import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL_DB_NAME;
 import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
 
@@ -10,6 +11,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.testcontainers.containers.MongoDBContainer;
 
+import com.examples.school.model.Student;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
@@ -41,6 +43,19 @@ public class StudentMongoRepositoryTestcontainersIT {
 	}
 
 	@Test
-	public void test() {
+	public void testFindAll() {
+		studentCollection.insertOne(
+				new Document()
+					.append("id", "1")
+					.append("name", "test1"));
+		studentCollection.insertOne(
+				new Document()
+					.append("id", "2")
+					.append("name", "test2"));
+		assertThat(studentRepository.findAll())
+			.containsExactly(
+					new Student("1", "test1"),
+					new Student("2", "test2"));
+			
 	}
 }
