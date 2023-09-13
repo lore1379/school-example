@@ -6,8 +6,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import com.examples.school.model.Student;
 import com.examples.school.view.StudentView;
@@ -146,12 +144,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 		
 		listStudentsModel = new DefaultListModel<>();
 		listStudents = new JList<>(listStudentsModel);
-		listStudents.addListSelectionListener(new ListSelectionListener() {		
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1);
-			}
-		});
+		listStudents.addListSelectionListener(e -> 
+			btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1));
 		
 		scrollPane.setViewportView(listStudents);
 		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
