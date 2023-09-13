@@ -14,6 +14,9 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -79,6 +82,16 @@ public class StudentSwingView extends JFrame implements StudentView {
 		contentPane.add(lblId, gbc_lblId);
 		
 		txtId = new JTextField();
+		KeyAdapter btnAddEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				btnAdd.setEnabled(
+					!txtId.getText().isEmpty() &&
+					!txtName.getText().isEmpty()
+				);
+			}
+		};
+		txtId.addKeyListener(btnAddEnabler);
 		txtId.setName("idTextBox");
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
@@ -97,6 +110,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 		contentPane.add(lblName, gbc_lblName);
 		
 		txtName = new JTextField();
+		txtName.addKeyListener(btnAddEnabler);
 		txtName.setName("nameTextBox");
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
