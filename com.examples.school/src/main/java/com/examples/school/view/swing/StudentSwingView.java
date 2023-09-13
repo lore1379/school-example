@@ -17,6 +17,7 @@ import java.awt.Insets;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
@@ -187,6 +188,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 	public void studentRemoved(Student studentToDelete) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public DefaultListModel<Student> getListStudentsModel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
