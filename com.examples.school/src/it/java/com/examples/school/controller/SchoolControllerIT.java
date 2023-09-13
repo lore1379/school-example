@@ -14,8 +14,12 @@ import com.examples.school.model.Student;
 import com.examples.school.repository.mongo.StudentMongoRepository;
 import com.examples.school.view.StudentView;
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 public class SchoolControllerIT {
+	
+	private static int mongoPort =
+			Integer.parseInt(System.getProperty("mongo.port", "27017"));
 	
 	@Mock
 	private StudentView studentView;
@@ -30,7 +34,9 @@ public class SchoolControllerIT {
 	@Before
 	public void setup() {
 		closeable = MockitoAnnotations.openMocks(this);	
-		studentRepository = new StudentMongoRepository(new MongoClient("localhost"));
+		studentRepository = new StudentMongoRepository(
+				new MongoClient(
+						new ServerAddress("localhost", mongoPort)));
 		for (Student student : studentRepository.findAll()) {
 			studentRepository.delete(student.getId());
 		}
