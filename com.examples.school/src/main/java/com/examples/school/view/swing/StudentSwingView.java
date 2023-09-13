@@ -6,6 +6,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.examples.school.model.Student;
 import com.examples.school.view.StudentView;
@@ -36,10 +38,13 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JLabel lblName;
 	private JTextField txtName;
 	private JButton btnAdd;
-	private JList list;
 	private JScrollPane scrollPane;
 	private JButton btnDeleteSelected;
 	private JLabel label;
+
+	private JList<Student> listStudents;
+
+	private DefaultListModel<Student> listStudentsModel;
 
 	/**
 	 * Launch the application.
@@ -139,10 +144,18 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
-		list = new JList();
-		scrollPane.setViewportView(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setName("studentList");
+		listStudentsModel = new DefaultListModel<>();
+		listStudents = new JList<>(listStudentsModel);
+		listStudents.addListSelectionListener(new ListSelectionListener() {		
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnDeleteSelected.setEnabled(listStudents.getSelectedIndex() != -1);
+			}
+		});
+		
+		scrollPane.setViewportView(listStudents);
+		listStudents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listStudents.setName("studentList");
 		
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.setEnabled(false);
@@ -191,8 +204,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	public DefaultListModel<Student> getListStudentsModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return listStudentsModel;
 	}
 	
 	
