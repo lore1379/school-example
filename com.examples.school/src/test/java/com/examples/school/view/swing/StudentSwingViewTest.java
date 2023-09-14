@@ -1,6 +1,8 @@
 package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
@@ -18,6 +20,7 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.examples.school.controller.SchoolController;
 import com.examples.school.model.Student;
 
 @RunWith(GUITestRunner.class)
@@ -138,6 +141,15 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 			.containsExactly(student2.toString());
 		window.label("errorMessageLabel")
 		.requireText(" ");
+	}
+	
+	@Test
+	public void testAddButtonShouldDelegateToSchoolControllerNewStudent() {
+		SchoolController schoolController = mock(SchoolController.class);
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("nameTextBox").enterText("test");
+		window.button(JButtonMatcher.withText("Add")).click();
+		verify(schoolController).newStudent(new Student("1", "test"));
 	}
 
 }
