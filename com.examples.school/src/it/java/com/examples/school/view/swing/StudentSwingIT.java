@@ -79,4 +79,14 @@ public class StudentSwingIT extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel")
 			.requireText("Already existing student with id 1: " + new Student("1", "existing"));
 	}
+	
+	@Test @GUITest
+	public void testDeleteButtonSuccess() {
+		GuiActionRunner.execute(() -> 
+			schoolController.newStudent(new Student("1", "toRemove")) 
+			);
+		window.list("studentList").selectItem(0);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		assertThat(window.list().contents()).isEmpty();
+	}
 }
