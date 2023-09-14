@@ -2,6 +2,7 @@ package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -57,5 +58,14 @@ public class StudentSwingIT extends AssertJSwingJUnitTestCase {
 		// and verify that the view's list is populated
 		assertThat(window.list().contents())
 			.containsExactly(student1.toString(), student2.toString());
+	}
+	
+	@Test @GUITest
+	public void testAddButtonSuccess() {
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("nameTextBox").enterText("test");
+		window.button(JButtonMatcher.withText("Add")).click();
+		assertThat(window.list().contents())
+			.containsExactly(new Student("1", "test").toString());
 	}
 }
