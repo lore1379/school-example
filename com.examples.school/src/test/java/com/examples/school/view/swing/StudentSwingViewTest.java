@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
+import javax.swing.DefaultListModel;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
@@ -115,6 +117,27 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 			.containsExactly(student.toString());
 		window.label("errorMessageLabel")
 			.requireText(" ");
+	}
+	
+	@Test
+	public void testStudentRemovedShouldRemoveTheStudentFromTheListAndResetTheErrorLabel() {
+		Student student1 = new Student("1", "test1");
+		Student student2 = new Student("2", "test2");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Student> listStudentsModel = studentSwingView.getListStudentsModel();
+			listStudentsModel.addElement(student1);
+			listStudentsModel.addElement(student2);
+		});
+		
+		GuiActionRunner.execute(() -> 
+			studentSwingView.studentRemoved(new Student("1", "test1"))
+		);
+		
+		String[] listContents = window.list().contents();
+		assertThat(listContents)
+			.containsExactly(student2.toString());
+		window.label("errorMessageLabel")
+		.requireText(" ");
 	}
 
 }
