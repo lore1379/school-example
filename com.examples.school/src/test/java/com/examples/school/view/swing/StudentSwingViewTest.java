@@ -19,6 +19,8 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import com.examples.school.controller.SchoolController;
 import com.examples.school.model.Student;
@@ -28,15 +30,26 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private StudentSwingView studentSwingView;
 	private FrameFixture window;
+	
+	@Mock
+	private SchoolController schoolController;
+	private AutoCloseable closeable;
 
 	@Override
 	protected void onSetUp() {
+		closeable = MockitoAnnotations.openMocks(this);
 		GuiActionRunner.execute(() -> {
 			studentSwingView = new StudentSwingView();
+			studentSwingView.setSchoolController(schoolController);
 			return studentSwingView;
 		});	
 		window = new FrameFixture(robot(), studentSwingView);
 		window.show();
+	}
+	
+	@Override
+	protected void onTearDown() throws Exception {
+		closeable.close();
 	}
 	
 	@Test @GUITest
@@ -145,7 +158,6 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 	
 	@Test
 	public void testAddButtonShouldDelegateToSchoolControllerNewStudent() {
-		SchoolController schoolController = mock(SchoolController.class);
 		window.textBox("idTextBox").enterText("1");
 		window.textBox("nameTextBox").enterText("test");
 		window.button(JButtonMatcher.withText("Add")).click();
