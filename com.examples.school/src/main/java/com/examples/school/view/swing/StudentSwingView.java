@@ -190,9 +190,9 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	@Override
-	public void studentRemoved(Student studentToDelete) {
-		// TODO Auto-generated method stub
-		
+	public void studentRemoved(Student student) {
+		listStudentsModel.removeElement(student);
+		lblErrorMessage.setText(" ");
 	}
 
 	public DefaultListModel<Student> getListStudentsModel() {
