@@ -103,5 +103,18 @@ public class StudentSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel")
 			.requireText("error message: " + student);
 	}
+	
+	@Test
+	public void testStudentAddedShouldAddTheStudentToTheListAndResetTheErrorLabel() {
+		Student student = new Student("1", "test1");
+		GuiActionRunner.execute(() -> 
+			studentSwingView.studentAdded(new Student("1", "test1"))
+		);
+		String[] listContents = window.list().contents();
+		assertThat(listContents)
+			.containsExactly(student.toString());
+		window.label("errorMessageLabel")
+			.requireText(" ");
+	}
 
 }
