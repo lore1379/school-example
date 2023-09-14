@@ -1,6 +1,9 @@
 package com.examples.school.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import javax.swing.DefaultListModel;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -88,5 +91,20 @@ public class StudentSwingIT extends AssertJSwingJUnitTestCase {
 		window.list("studentList").selectItem(0);
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 		assertThat(window.list().contents()).isEmpty();
+	}
+	
+	@Test @GUITest
+	public void testDeleteButtonError() {
+		Student student = new Student("1", "nonExistent");
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Student> listStudentsModel = studentSwingView.getListStudentsModel();
+			listStudentsModel.addElement(student);
+		});
+		window.list("studentList").selectItem(0);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		assertThat(window.list().contents())
+			.containsExactly(student.toString());
+		window.label("errorMessageLabel")
+			.requireText("No existing student with id 1: " + new Student("1", "nonExistent"));
 	}
 }
