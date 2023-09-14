@@ -181,7 +181,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	@Override
 	public void studentAdded(Student student) {
 		listStudentsModel.addElement(student);
-		lblErrorMessage.setText(" ");		
+		resetErrorLabel();		
 	}
 
 	@Override
@@ -192,9 +192,13 @@ public class StudentSwingView extends JFrame implements StudentView {
 	@Override
 	public void studentRemoved(Student student) {
 		listStudentsModel.removeElement(student);
-		lblErrorMessage.setText(" ");
+		resetErrorLabel();
 	}
 
+	private void resetErrorLabel() {
+		lblErrorMessage.setText(" ");
+	}
+	
 	public DefaultListModel<Student> getListStudentsModel() {
 		return listStudentsModel;
 	}
