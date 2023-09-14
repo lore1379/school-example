@@ -38,7 +38,7 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private JButton btnAdd;
 	private JScrollPane scrollPane;
 	private JButton btnDeleteSelected;
-	private JLabel label;
+	private JLabel lblErrorMessage;
 
 	private JList<Student> listStudents;
 
@@ -160,17 +160,17 @@ public class StudentSwingView extends JFrame implements StudentView {
 		gbc_btnDeleteSelected.gridy = 4;
 		contentPane.add(btnDeleteSelected, gbc_btnDeleteSelected);
 		
-		label = new JLabel(" ");
-		label.setPreferredSize(new Dimension(66, 15));
-		label.setMinimumSize(new Dimension(66, 15));
-		label.setMaximumSize(new Dimension(66, 15));
-		label.setName("errorMessageLabel");
+		lblErrorMessage = new JLabel(" ");
+		lblErrorMessage.setPreferredSize(new Dimension(66, 15));
+		lblErrorMessage.setMinimumSize(new Dimension(66, 15));
+		lblErrorMessage.setMaximumSize(new Dimension(66, 15));
+		lblErrorMessage.setName("errorMessageLabel");
 		GridBagConstraints gbc_label = new GridBagConstraints();
 		gbc_label.gridwidth = 2;
 		gbc_label.insets = new Insets(0, 0, 0, 5);
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 5;
-		contentPane.add(label, gbc_label);
+		contentPane.add(lblErrorMessage, gbc_label);
 	}
 
 	@Override
@@ -185,9 +185,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 	}
 
 	@Override
-	public void showError(String string, Student existingStudent) {
-		// TODO Auto-generated method stub
-		
+	public void showError(String message, Student student) {
+		lblErrorMessage.setText(message + ": " + student);
 	}
 
 	@Override
