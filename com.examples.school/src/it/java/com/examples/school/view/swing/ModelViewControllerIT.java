@@ -1,5 +1,8 @@
 package com.examples.school.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -43,6 +46,11 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase{
 	}
 
 	@Test
-	public void test() {
+	public void testAddStudent() {
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("nameTextBox").enterText("test");
+		window.button(JButtonMatcher.withText("Add")).click();
+		assertThat(studentRepository.findById("1"))
+			.isEqualTo(new Student("1", "test"));
 	}
 }
