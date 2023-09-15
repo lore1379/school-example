@@ -100,13 +100,17 @@ public class SchoolSwingAppE2E extends AssertJSwingJUnitTestCase{
 	public void testDeleteButtonError() {
 		window.list("studentList")
 			.selectItem(Pattern.compile(".*" + STUDENT_FIXTURE_1_NAME + ".*"));
-		mongoClient
-			.getDatabase(DB_NAME)
-			.getCollection(COLLECTION_NAME)
-			.deleteOne(Filters.eq("id", STUDENT_FIXTURE_1_ID));
+		removeTestStudentFromDatabase(STUDENT_FIXTURE_1_ID);
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 		assertThat(window.label("errorMessageLabel").text())
 			.contains(STUDENT_FIXTURE_1_ID, STUDENT_FIXTURE_1_NAME);
+	}
+
+	private void removeTestStudentFromDatabase(String id) {
+		mongoClient
+			.getDatabase(DB_NAME)
+			.getCollection(COLLECTION_NAME)
+			.deleteOne(Filters.eq("id", id));
 	}
 	
 	private void addTestStudentToDatabase(String id, String name) {
