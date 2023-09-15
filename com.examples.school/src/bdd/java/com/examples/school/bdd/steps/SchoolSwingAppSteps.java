@@ -1,5 +1,6 @@
 package com.examples.school.bdd.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.*;
 
 import javax.swing.JFrame;
@@ -35,6 +36,8 @@ public class SchoolSwingAppSteps {
 	@After
 	public void tearDown() {
 		mongoClient.close();
+		if (window != null)
+			window.cleanUp();
 	}
 	
 	@Given("The database contains a student with id {string} and name {string}")
@@ -66,8 +69,9 @@ public class SchoolSwingAppSteps {
 	}
 
 	@Then("The list contains an element with id {string} and name {string}")
-	public void the_list_contains_an_element_with_id_and_name(String string, String string2) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_list_contains_an_element_with_id_and_name(
+			String id, String name) {
+	    assertThat(window.list().contents())
+	    	.anySatisfy(e -> assertThat(e).contains(id, name));
 	}
 }
