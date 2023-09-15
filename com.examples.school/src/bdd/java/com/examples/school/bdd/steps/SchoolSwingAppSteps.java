@@ -12,6 +12,7 @@ import org.assertj.swing.fixture.FrameFixture;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -24,12 +25,16 @@ public class SchoolSwingAppSteps {
 	private static final String COLLECTION_NAME = "test-collection";
 	private static final String DB_NAME = "test-db";
 	
+	private static int mongoPort =
+			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	
 	private MongoClient mongoClient;
 	private FrameFixture window;
 
 	@Before
 	public void setup() {	
-		mongoClient = new MongoClient();
+		mongoClient = new MongoClient(
+				new ServerAddress("localhost", mongoPort));
 		mongoClient.getDatabase(DB_NAME).drop();
 	}
 	
@@ -56,6 +61,8 @@ public class SchoolSwingAppSteps {
 	public void the_Student_View_is_shown() {
 		application("com.examples.school.app.swing.SchoolSwingApp")
 			.withArgs(
+				"--mongo-host=" + "localhost",
+				"--mongo-port=" + Integer.toString(mongoPort),
 				"--db-name=" + DB_NAME,
 				"--db-collection=" + COLLECTION_NAME
 			)
