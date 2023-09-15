@@ -1,5 +1,9 @@
 package com.examples.school.bdd.steps;
 
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -7,9 +11,18 @@ import io.cucumber.java.en.When;
 public class SchoolSwingAppSteps {
 
 	@Given("The database contains a student with id {string} and name {string}")
-	public void the_database_contains_a_student_with_id_and_name(String string, String string2) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_database_contains_a_student_with_id_and_name(
+			String id, String name) {
+	    MongoClient mongoClient = new MongoClient();
+	    mongoClient.getDatabase("test-db").drop();
+	    mongoClient
+	    	.getDatabase("test-db")
+	    	.getCollection("test-collection")
+	    	.insertOne(
+	    			new Document()
+	    				.append("id", id)
+	    				.append("name", name));
+	    mongoClient.close();
 	}
 
 	@When("The Student View is shown")
