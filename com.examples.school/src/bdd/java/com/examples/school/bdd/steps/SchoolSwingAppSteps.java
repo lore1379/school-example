@@ -1,5 +1,13 @@
 package com.examples.school.bdd.steps;
 
+import static org.assertj.swing.launcher.ApplicationLauncher.*;
+
+import javax.swing.JFrame;
+
+import org.assertj.swing.core.BasicRobot;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.finder.WindowFinder;
+import org.assertj.swing.fixture.FrameFixture;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
@@ -16,6 +24,7 @@ public class SchoolSwingAppSteps {
 	private static final String DB_NAME = "test-db";
 	
 	private MongoClient mongoClient;
+	private FrameFixture window;
 
 	@Before
 	public void setup() {	
@@ -42,8 +51,18 @@ public class SchoolSwingAppSteps {
 
 	@When("The Student View is shown")
 	public void the_Student_View_is_shown() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		application("com.examples.school.app.swing.SchoolSwingApp")
+			.withArgs(
+				"--db-name=" + DB_NAME,
+				"--db-collection=" + COLLECTION_NAME
+			)
+			.start();
+		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
+			@Override
+			protected boolean isMatching(JFrame frame) {
+				return "Student View".equals(frame.getTitle()) && frame.isShowing();
+			}
+		}).using(BasicRobot.robotWithCurrentAwtHierarchy());
 	}
 
 	@Then("The list contains an element with id {string} and name {string}")
