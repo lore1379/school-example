@@ -3,6 +3,8 @@ package com.examples.school.view.swing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.*;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 
 import org.assertj.swing.annotation.GUITest;
@@ -82,6 +84,15 @@ public class SchoolSwingAppE2E extends AssertJSwingJUnitTestCase{
 		window.button(JButtonMatcher.withText("Add")).click();
 		assertThat(window.label("errorMessageLabel").text())
 			.contains(STUDENT_FIXTURE_1_ID, STUDENT_FIXTURE_1_NAME);
+	}
+	
+	@Test @GUITest
+	public void testDeleteButtonSuccess() {
+		window.list("studentList")
+			.selectItem(Pattern.compile(".*" + STUDENT_FIXTURE_1_NAME + ".*"));
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		assertThat(window.list().contents())
+			.noneMatch(e -> e.contains(STUDENT_FIXTURE_1_NAME));
 	}
 	
 	private void addTestStudentToDatabase(String id, String name) {
