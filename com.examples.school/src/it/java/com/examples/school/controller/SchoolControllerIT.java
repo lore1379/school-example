@@ -30,13 +30,17 @@ public class SchoolControllerIT {
 	private SchoolController schoolController;
 	
 	private AutoCloseable closeable;
+	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
 
 	@Before
 	public void setup() {
 		closeable = MockitoAnnotations.openMocks(this);	
 		studentRepository = new StudentMongoRepository(
 				new MongoClient(
-						new ServerAddress("localhost", mongoPort)));
+						new ServerAddress("localhost", mongoPort)),
+				SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 		for (Student student : studentRepository.findAll()) {
 			studentRepository.delete(student.getId());
 		}

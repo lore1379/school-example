@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.examples.school.repository.mongo.StudentMongoRepository.SCHOOL_DB_NAME;
-import static com.examples.school.repository.mongo.StudentMongoRepository.STUDENT_COLLECTION_NAME;
-
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -30,13 +27,16 @@ public class StudentMongoRepositoryTestcontainersIT {
 	private StudentMongoRepository studentRepository;
 	private MongoCollection<Document> studentCollection;
 	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
+	
 	@Before
 	public void setup() {		
 		client = new MongoClient(
 				new ServerAddress(
 						mongo.getContainerIpAddress(),
 						mongo.getFirstMappedPort()));
-		studentRepository = new StudentMongoRepository(client);
+		studentRepository = new StudentMongoRepository(client, SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 		MongoDatabase database = client.getDatabase(SCHOOL_DB_NAME);
 		database.drop();
 		studentCollection = database.getCollection(STUDENT_COLLECTION_NAME);

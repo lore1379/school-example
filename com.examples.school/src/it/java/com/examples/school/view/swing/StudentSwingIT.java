@@ -29,12 +29,16 @@ public class StudentSwingIT extends AssertJSwingJUnitTestCase {
 	private SchoolController schoolController;
 	private FrameFixture window;
 	private StudentMongoRepository studentRepository;
+	
+	public static final String STUDENT_COLLECTION_NAME = "student";
+	public static final String SCHOOL_DB_NAME = "school";
 
 	@Override
 	protected void onSetUp() throws Exception {
 		studentRepository = new StudentMongoRepository(
 				new MongoClient(
-						new ServerAddress("localhost", mongoPort)));
+						new ServerAddress("localhost", mongoPort)),
+				SCHOOL_DB_NAME, STUDENT_COLLECTION_NAME);
 		for (Student student : studentRepository.findAll()) {
 			studentRepository.delete(student.getId());
 		}
