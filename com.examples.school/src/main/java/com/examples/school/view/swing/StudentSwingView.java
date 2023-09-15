@@ -1,6 +1,5 @@
 package com.examples.school.view.swing;
 
-import java.awt.EventQueue;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -47,22 +46,6 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	private SchoolController schoolController;
 
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentSwingView frame = new StudentSwingView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	public DefaultListModel<Student> getListStudentsModel() {
 		return listStudentsModel;
