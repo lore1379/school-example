@@ -5,6 +5,7 @@ import static org.assertj.swing.launcher.ApplicationLauncher.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 
@@ -116,4 +117,11 @@ public class SchoolSwingAppSteps {
 	    assertThat(window.label("errorMessageLabel").text())
 	    	.contains(DatabaseSteps.STUDENT_FIXTURE_1_NAME);
 	}
+	
+	@Given("The user selects a student from the list")
+	public void the_user_selects_a_student_from_the_list() {
+		window.list("studentList")
+		.selectItem(Pattern.compile(".*" + DatabaseSteps.STUDENT_FIXTURE_1_NAME + ".*"));
+	}
 }
+
