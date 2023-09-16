@@ -15,6 +15,7 @@ import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -36,7 +37,8 @@ public class SchoolSwingAppSteps {
 	
 	@Before
 	public void setUp() {
-		mongoClient = new MongoClient();
+		mongoClient = new MongoClient(
+				new ServerAddress("localhost", mongoPort));
 		// always start with an empty database
 		mongoClient.getDatabase(DB_NAME).drop();
 	}
@@ -104,7 +106,12 @@ public class SchoolSwingAppSteps {
 	@Given("The user provides student data in the text fields")
 	public void the_user_provides_student_data_in_the_text_fields() {
 	    window.textBox("idTextBox").enterText("10");
-	    window.textBox("nameTextBox").enterText("new student");
-	    
+	    window.textBox("nameTextBox").enterText("new student");    
+	}
+	
+	@Then("The list contains the new student")
+	public void the_list_contains_the_new_student() {
+		assertThat(window.list().contents())
+			.anySatisfy(e -> assertThat(e).contains("10", "new student"));
 	}
 }

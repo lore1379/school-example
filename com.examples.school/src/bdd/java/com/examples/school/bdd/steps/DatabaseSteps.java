@@ -5,6 +5,7 @@ import java.util.List;
 import org.bson.Document;
 
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -17,6 +18,9 @@ public class DatabaseSteps {
 
 	private MongoClient mongoClient;
 	
+	private static int mongoPort =
+			Integer.parseInt(System.getProperty("mongo.port", "27017"));
+	
 	static final String STUDENT_FIXTURE_1_ID = "1";
 	static final String STUDENT_FIXTURE_1_NAME = "first student";
 	static final String STUDENT_FIXTURE_2_ID = "2";
@@ -24,7 +28,8 @@ public class DatabaseSteps {
 
 	@Before
 	public void setUp() {
-		mongoClient = new MongoClient();
+		mongoClient = new MongoClient(
+				new ServerAddress("localhost", mongoPort));
 		// always start with an empty database
 		mongoClient.getDatabase(DB_NAME).drop();
 	}
