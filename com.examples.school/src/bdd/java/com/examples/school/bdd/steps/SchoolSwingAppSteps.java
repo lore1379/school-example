@@ -129,5 +129,11 @@ public class SchoolSwingAppSteps {
 		assertThat(window.list().contents())
 			.noneMatch(e -> e.contains(DatabaseSteps.STUDENT_FIXTURE_1_NAME));
 	}
+	
+	@Then("An error is shown containing the name of the selected student")
+	public void an_error_is_shown_containing_the_name_of_the_selected_student() {
+		assertThat(window.label("errorMessageLabel").text())
+    		.contains(DatabaseSteps.STUDENT_FIXTURE_1_NAME);
+	}
 }
 
