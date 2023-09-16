@@ -6,6 +6,7 @@ import org.bson.Document;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.model.Filters;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -50,6 +51,14 @@ public class DatabaseSteps {
 	public void the_database_contains_a_few_students() {
 		addTestStudentToDatabase(STUDENT_FIXTURE_1_ID, STUDENT_FIXTURE_1_NAME);
 		addTestStudentToDatabase(STUDENT_FIXTURE_2_ID, STUDENT_FIXTURE_2_NAME);
+	}
+	
+	@Given("The student is in the meantime removed from the database")
+	public void the_student_is_in_the_meantime_removed_from_the_database() {
+		mongoClient
+			.getDatabase(DB_NAME)
+			.getCollection(COLLECTION_NAME)
+			.deleteOne(Filters.eq("id", STUDENT_FIXTURE_1_ID));
 	}
 
 	private void addTestStudentToDatabase(String id, String name) {
