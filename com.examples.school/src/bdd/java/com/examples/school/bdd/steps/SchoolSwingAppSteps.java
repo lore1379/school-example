@@ -123,5 +123,11 @@ public class SchoolSwingAppSteps {
 		window.list("studentList")
 		.selectItem(Pattern.compile(".*" + DatabaseSteps.STUDENT_FIXTURE_1_NAME + ".*"));
 	}
+	
+	@Then("The student is removed from the list")
+	public void the_student_is_removed_from_the_list() {
+		assertThat(window.list().contents())
+			.noneMatch(e -> e.contains(DatabaseSteps.STUDENT_FIXTURE_1_NAME));
+	}
 }
 
