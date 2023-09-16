@@ -14,9 +14,6 @@ import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
 
-import com.mongodb.MongoClient;
-import com.mongodb.ServerAddress;
-
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -33,19 +30,12 @@ public class SchoolSwingAppSteps {
 	
 	private FrameFixture window;
 	
-	private MongoClient mongoClient;
-	
 	@Before
 	public void setUp() {
-		mongoClient = new MongoClient(
-				new ServerAddress("localhost", mongoPort));
-		// always start with an empty database
-		mongoClient.getDatabase(DB_NAME).drop();
 	}
 	
 	@After
 	public void tearDown() {
-		mongoClient.close();
 		if (window != null)
 			window.cleanUp();
 	}
@@ -113,5 +103,11 @@ public class SchoolSwingAppSteps {
 	public void the_list_contains_the_new_student() {
 		assertThat(window.list().contents())
 			.anySatisfy(e -> assertThat(e).contains("10", "new student"));
+	}
+	
+	@Given("The user provides student data in the text fields, specifying an existing id")
+	public void the_user_provides_student_data_in_the_text_fields_specifying_an_existing_id() {
+		window.textBox("idTextBox").enterText(DatabaseSteps.STUDENT_FIXTURE_1_ID);
+	    window.textBox("nameTextBox").enterText("new student"); 
 	}
 }
