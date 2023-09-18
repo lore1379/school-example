@@ -107,7 +107,7 @@ public class StudentSwingIT extends AssertJSwingJUnitTestCase {
 		window.list("studentList").selectItem(0);
 		window.button(JButtonMatcher.withText("Delete Selected")).click();
 		assertThat(window.list().contents())
-			.containsExactly(student.toString());
+			.isEmpty();
 		window.label("errorMessageLabel")
 			.requireText("No existing student with id 1: " + new Student("1", "nonExistent"));
 	}
