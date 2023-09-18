@@ -201,8 +201,8 @@ public class StudentSwingView extends JFrame implements StudentView {
 
 	@Override
 	public void showErrorStudentNotFound(String message, Student student) {
-		// TODO Auto-generated method stub
-		
+		lblErrorMessage.setText(message + ": " + student);
+		listStudentsModel.removeElement(student);
 	}
 	
 }
