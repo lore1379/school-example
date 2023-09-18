@@ -198,5 +198,11 @@ public class StudentSwingView extends JFrame implements StudentView {
 	private void resetErrorLabel() {
 		lblErrorMessage.setText(" ");
 	}
+
+	@Override
+	public void showErrorStudentNotFound(String message, Student student) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
